@@ -1,8 +1,55 @@
 import { Injectable } from '@nestjs/common';
-
+import { Request } from 'express';
+ 
 @Injectable()
 export class AppService {
+  // Say Hello! 
   getHello(): string {
-    return 'Hello Nest V1.01';
-  }
-}
+    const currentTimeMilliseconds = Date.now();
+    console.log("AppService L1. Request TimeMill=" + currentTimeMilliseconds);
+    return 'Hello My Nest!';
+  };
+
+  // Health Check 
+  getHealthStatus(): string {
+    return 'OK';
+  };
+
+  // Get IP Basic 
+  getIP(req: Request): string {
+
+    let finalIp : any; // Final return IP; 
+
+    const forwardedIp = req.headers['x-forwarded-for'];
+    // console.log("AppService L10. forwardedIp=" + forwardedIp, "type="  + typeof forwardedIp ); 
+
+    if( forwardedIp  == undefined ) {
+      if ( req.ip == undefined) {
+        finalIp = ""; 
+      }
+      else {
+        finalIp = req.ip;
+      }; 
+      console.log("AppService L20-A. RequestIp=" + finalIp); 
+    }
+    else {
+      finalIp = forwardedIp;   
+      console.log("AppService L20-B. ForwardedIp=" + finalIp); 
+    }; 
+ 
+    return finalIp; 
+
+  };
+
+  // Get Date 
+  getDate(): string {
+    const dateString  = new Date().toISOString(); 
+    console.log("AppService L30. Now=" + dateString); 
+    return dateString;
+  };
+
+ 
+};
+
+
+
