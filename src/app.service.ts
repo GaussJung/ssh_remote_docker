@@ -36,7 +36,10 @@ export class AppService {
       finalIp = forwardedIp;   
       console.log("AppService L20-B. ForwardedIp=" + finalIp); 
     }; 
- 
+    
+    // remove the quirk of ipv6 : ex) ::ffff:121.166.96.173 
+    if (finalIp.startsWith('::ffff:')) { finalIp = finalIp.substring(7) }; 
+
     return finalIp; 
 
   };
