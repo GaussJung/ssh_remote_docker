@@ -10,16 +10,7 @@ jobs:
     runs-on: ubuntu-latest  
     steps:
       - name: Checkout source code
-        uses: actions/checkout@master
- 
-      - name: Before Deploy
-        env:
-          SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
-          SERVER_IP: ${{ secrets.SERVER_IP }}
-          REMOTE_SSH_KEY: ${{ secrets.REMOTE_SSH_KEY }}
-        run: |
-          echo "SERVER_USERNAME : ${{ secrets.SERVER_USERNAME }}"
-          echo "REMOTE_SSH_KEY : ${{ secrets.REMOTE_SSH_KEY }}"
+        uses: actions/checkout@v3
 
       - name: execute remote ssh
         uses: appleboy/ssh-action@master
@@ -29,7 +20,5 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script: |
-            echo " ========== START of Deployment v1.0 ==========="
-            whoami
-            ./logwrite.sh
-            uptime
+            echo " ========== START of Deployment v1.1 ==========="
+            ./srcDeploy.sh
