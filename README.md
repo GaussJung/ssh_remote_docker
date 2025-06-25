@@ -1,4 +1,4 @@
-## myNest  V1.29
+## myNest  V1.31
 
 ## Description
 
@@ -23,6 +23,48 @@ $ pnpm run start:dev
 $ pnpm run start:prod
 ```
 
+## Run the project using PM2 
+
+```bash
+# Install PM2
+$ npm install pm2 -g  
+
+# create config file (ecosystem.config.js at same directory tsconfig.js )  
+module.exports = {
+  apps: [
+    {
+      name: 'mynest',
+      script: 'dist/main.js',
+      instances: 'max', // or Number ( vCPU count ex:2 )
+      exec_mode: 'cluster', // Activate cluster mode
+      autorestart: true,
+      watch: false,
+      env: {
+        NODE_ENV: 'production',
+      },
+    },
+  ],
+};
+
+# start PM2 for production mode 
+$ pm2 start ecosystem.config.js
+
+# PM2 auto startup and save  
+$ pm2  startup  
+$ sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu
+$ pm2 save
+
+# PM2 log check 
+$ pm2 logs  
+
+# PM2 status check 
+$ pm2 status
+
+# PM2 stop 
+$ pm2 stop all 
+```
+
+
 ## Browser Result Test  
 ```bash
 # Basic App Service 
@@ -42,8 +84,6 @@ http://ServerIP or domain:3000/monitor/memory  --> ex) {"memory-usage":0.9039504
 
 ```
 
-
-
 ## Run tests
 
 ```bash
@@ -58,7 +98,6 @@ $ pnpm run test:cov
 ```
 
 ## Deployment
-
 When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
 
 If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:

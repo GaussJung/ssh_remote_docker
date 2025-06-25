@@ -20,5 +20,5 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script: |
-            echo " ========== START of Deployment v1.1 ==========="
+            echo " ========== START of Deployment v1.0 ==========="
             ./srcDeploy.sh

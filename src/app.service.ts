@@ -3,11 +3,12 @@ import { Request } from 'express';
  
 @Injectable()
 export class AppService {
+
   // Say Hello! 
   getHello(): string {
     const currentTimeMilliseconds = Date.now();
     console.log("AppService L1. Request TimeMill=" + currentTimeMilliseconds);
-    return 'Hello My Nest!';
+    return 'Hello My Nest! ';
   };
 
   // Health Check 
