@@ -30,15 +30,17 @@ export class AppService {
       else {
         finalIp = req.ip;
       }; 
-      console.log("AppService L20-A. RequestIp=" + finalIp); 
+      console.log("AppService L20-A. RequestIp"); 
     }
     else {
       finalIp = forwardedIp;   
-      console.log("AppService L20-B. ForwardedIp=" + finalIp); 
+      console.log("AppService L20-B. ForwardedIp"); 
     }; 
     
     // remove the quirk of ipv6 : ex) ::ffff:121.166.96.173 
     if (finalIp.startsWith('::ffff:')) { finalIp = finalIp.substring(7) }; 
+
+    console.log("AppService L25. IP=" + finalIp); 
 
     return finalIp; 
 
