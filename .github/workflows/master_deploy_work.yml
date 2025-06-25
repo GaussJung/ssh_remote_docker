@@ -18,6 +18,6 @@ jobs:
           SERVER_IP: ${{ secrets.SERVER_IP }}
           REMOTE_SSH_KEY: ${{ secrets.REMOTE_SSH_KEY }}
         run: |
-          echo "S3_BUCKETNAME : ${{ secrets.SERVER_USERNAME }}"
+          echo "SERVER_USERNAME : ${{ secrets.SERVER_USERNAME }}"
           echo "REMOTE_SSH_KEY : ${{ secrets.REMOTE_SSH_KEY }}"
   
