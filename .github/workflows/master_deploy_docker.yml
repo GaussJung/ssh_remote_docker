@@ -41,6 +41,7 @@ jobs:
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script: |
             echo " ========== START of Deployment v1.1 ==========="
+            cd ${{ secrets.DOCKER_COMPOSE_ROOT }}  
             sudo docker compose down 
             sleep 1
             sudo docker rmi -f ${{ secrets.DOCKER_REPOSITORY }}:latest  
