@@ -1,4 +1,4 @@
-name: master_remote_work
+name: master_deploy
 
 on:
   push:

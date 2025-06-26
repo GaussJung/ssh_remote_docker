@@ -1,0 +1,18 @@
+# Run Application with docker and docker-compose
+# docker-compose.yml is setup file for Docker system. 
+# docker-compose.yml : /home/ubuntu  or other place 
+# command : 
+# START : sudo docker compose up -d 
+# STOP : sudo docker compose down 
+# View Log : sudo docker compose logs  
+services:
+    svcimage:
+        image: myfandom/fdbackend:latest
+        restart: unless-stopped
+        container_name: fdbackendcont
+        environment:
+            - TZ=Asia/Kolkata
+            - LC_ALL=C.UTF-8
+        ports:
+            - 3000:3000
+
