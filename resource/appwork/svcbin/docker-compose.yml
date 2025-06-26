@@ -1,0 +1,40 @@
+# Run Application with docker and docker-compose
+# docker-compose.yml is setup file for Docker system. 
+# docker-compose.yml : /home/ubuntu/appwork/svcbin 
+# symbolic link : sudo ln -s /home/ubuntu/appwork  /appwork 
+# command : 
+# START : sudo docker compose up -d 
+# STOP : sudo docker compose down 
+# View Log : sudo docker compose logs  
+services:
+
+    web-svc:
+        image: nginx:alpine
+        restart: unless-stopped
+        container_name: webcont
+        ports:
+            - "80:80"
+        volumes:
+            - /appwork/svdata/logs:/var/log/nginx
+            - /appwork/svdata/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - app-svc
+        networks:
+            - svc-network
+
+    app-svc:
+        image: myfandom/fdbackend:latest
+        restart: unless-stopped
+        container_name: fdbackendcont
+        environment:
+            - LC_ALL=C.UTF-8
+        expose:
+            - "3000"
+        networks:
+            - svc-network
+
+networks:
+    svc-network:
+        driver: bridge
+
+
