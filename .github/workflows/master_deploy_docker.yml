@@ -44,5 +44,7 @@ jobs:
             echo " ========== START of Deployment v1.1 ==========="
             sudo docker compose down 
             sleep 1
+            sudo sudo docker rmi -f ${{ secrets.DOCKER_REPOSITORY }}:latest  
+            sleep 1
             sudo docker compose up -d 
             ls -al >> "Deployment_At_$(date '+%Y%m%d_%H:%M:%S').log"
