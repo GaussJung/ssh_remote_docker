@@ -1,6 +1,6 @@
-FROM node:22-alpine AS base
+FROM node:22-alpine AS myBase
 
-FROM base AS builder
+FROM myBase AS myBuilder
   RUN apk add --no-cache libc6-compat
   WORKDIR /app
   COPY package.json pnpm-lock.yaml ./
@@ -9,9 +9,9 @@ FROM base AS builder
   COPY . .
   RUN pnpm build
 
-FROM base AS runner
+FROM myBase AS myRunner
   WORKDIR /app
   RUN npm install -g pm2
-  COPY --from=builder /app .
+  COPY --from=myBuilder /app .
   EXPOSE 3000
   CMD ["pm2-runtime", "start", "ecosystem.config.js"]

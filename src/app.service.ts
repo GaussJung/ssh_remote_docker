@@ -50,8 +50,9 @@ export class AppService {
   // Get Date 
   getDate(): string {
     const dateString  = new Date().toISOString(); 
-    console.log("AppService L30. Now=" + dateString); 
-    return dateString;
+    const versionString = "V1.36"; 
+    console.log("AppService L30. " + versionString + " Now : " + dateString ); 
+    return versionString + " >> Now : " + dateString;
   };
 
  
