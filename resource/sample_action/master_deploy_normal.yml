@@ -20,5 +20,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script: |
-            echo " ========== START of Deployment v1.0 ==========="
-            ./srcDeploy.sh
+            echo " ========== START of Deployment v1.1 ==========="
+            cp -f ~/ssh_remote_docker/resource/shell/srcBasicDeploy.sh ~/srcBasicDeploy.sh
+            chmod 755 srcBasicDeploy.sh 
+            ./srcBasicDeploy.sh

@@ -46,7 +46,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script: |
-            echo " ========== START of Deployment v1.4.8 ==========="
+            echo " ========== START of Deployment v1.4.7 ==========="
             cd ${{ secrets.DOCKER_COMPOSE_ROOT }}  
             sudo docker compose down 
             sleep 1

@@ -1,7 +1,8 @@
-## myNest  V1.4.7
+## myNest  V1.4.8 
 
 ## Description
-
+- Configuration of a Docker-based backend service by linking Nest.JS with NginX  
+- Init creation  
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Project setup
@@ -10,17 +11,20 @@
 $ pnpm install
 ```
 
-## Compile and run the project
+## Compile and run the project  
 
 ```bash
-# development
-$ pnpm run start
+# build only 
+$ pnpm build 
+
+# development (including build)
+$ pnpm run start  
 
 # watch mode
 $ pnpm run start:dev
 
 # production mode
-$ pnpm run start:prod
+$ pnpm run start:prod ( same to $ node dist/main )
 ```
 
 ## Run the project using PM2 
@@ -64,17 +68,75 @@ $ pm2 status
 $ pm2 stop all 
 ```
 
-
-## Browser Result Test  
+## Run the project using Docker-compose 
 ```bash
+# Go to docker-compose home dir which docker-compose.yml is located
+cd $DOCKER_COMPOSE_ROOT (ex:/svcwork/svcbin)
+
+# start up
+$ sudo docker compose up -d 
+
+# service stop 
+$ sudo docker compose down  
+
+# view logs 
+$ sudo docker compose logs -f 
+```
+
+## Quick Setup for installation : just follow below step 1~4. 
+```bash
+# Step1. Launch a instance and setup
+- Ubuntu 24.04 with over 2vCPU / 4GB 
+- Port open (80, 443, 3000 etc) 
+
+# Step2. Download init-setup batch file 
+cd ~ 
+git clone https://github.com/GaussJung/ssh_remote_docker
+cp -f ~/ssh_remote_docker/resource/shell/initBasicScript.sh  ~/. 
+
+rm -rf ~/ssh_remote_docker
+
+# Step3. Modify batch file (Optional)
+vi initBasicScript.sh  :  you can modify parameter(ex:SRCHOME) and git-repository. 
+
+# Step4. Execute batch file 
+chmod 755 initBasicScript.sh 
+./initBasicScript.sh
+```
+## Quick Setup for update   
+```bash
+# Step1. Copu update batch 
+cp -f ~/ssh_remote_docker/resource/shell/srcBasicDeploy.sh  ~/.  
+ 
+# Step3. Modify batch file (Optional)
+vi srcBasicDeploy.sh  :  you can modify parameter(ex:SRCHOME) and git-repository. 
+
+# Step3. Execute batch file 
+chmod 755 srcBasicDeploy.sh 
+./srcBasicDeploy.sh 
+```
+
+## Quick Setup for github action (Normal or Docker)
+- Normal - [Create:.github/workflows/master_deploy_normal.yml](https://github.com/GaussJung/ssh_remote_docker/blob/9ad51e0453df505724eca90ca9873937ad2e0a5b/resource/sample_action/master_deploy_normal.yml)   
+ 
+- Docker - [Create:.github/workflows/master_deploy_docker.yml](https://github.com/GaussJung/ssh_remote_docker/blob/9ad51e0453df505724eca90ca9873937ad2e0a5b/resource/sample_action/master_deploy_docker.yml)   
+
+- Before apply it, make github secrets and variables.      
+ 
+## Browser Result Test   
+```bash
+# Port 
+- Basic Arch Test : 3000 Port ( Node Only)
+- Docker Based Arch : 80 Port ( NginX + Node ) 
+
 # Basic App Service 
 http://ServerIP or domain:3000/    --> Hello My Nest!    
 
 # Show IP 
 http://ServerIP or domain:3000/ip   --> ex) 201.53.23.101 
 
-# Show Date
-http://ServerIP or domain:3000/date   --> ex) 22025-06-20T04:58:42.448Z 
+# Show Date (Also show version)
+http://ServerIP or domain:3000/date   --> ex) V1.45 >> Now : 2025-06-25T05:48:32.363Z
 
 # Monitor CPU-Usage 
 http://ServerIP or domain:3000/monitor/cpu  --> ex) {"cpu-usage":0.12758333333333333}
@@ -85,7 +147,6 @@ http://ServerIP or domain:3000/monitor/memory  --> ex) {"memory-usage":0.9039504
 ```
 
 ## Run tests
-
 ```bash
 # unit tests
 $ pnpm run test
@@ -96,42 +157,12 @@ $ pnpm run test:e2e
 # test coverage
 $ pnpm run test:cov
 ```
-
-## Deployment
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
+ 
 ## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
+- NestJS Website - [https://nestjs.com](https://nestjs.com/)
+- NestJS Document -  [https://docs.nestjs.com](https://docs.nestjs.com) 
+- Docker-Hub - [https://hub.docker.com/](https://hub.docker.com)
+- GitHub - [https://www.github.com/](https://www.github.com)
+   
 ## License
-
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
