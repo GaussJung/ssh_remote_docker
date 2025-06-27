@@ -4,7 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express'; // add for tr
 
 async function bootstrap() {
 
-  console.log("========== START Main App v1.42 =============");
+  console.log("========== START Main App =============");
 
   // OLD.  const app = await NestFactory.create(AppModule);
   const app = await NestFactory.create<NestExpressApplication>(AppModule);

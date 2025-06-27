@@ -1,4 +1,4 @@
-## myNest  V1.5.0 
+## myNest  V1.5.1 
 
 ## Description
 - Docker-based backend service Architecture example by linking Nest.JS with NginX  
@@ -35,8 +35,19 @@ $ pnpm run start:dev
 $ pnpm run start:prod ( same to $ node dist/main )
 ```
 
-## Run the project using PM2 
+## Compile and run in case of error with window OS   
+```bash
+# build only 
+> nest build 
 
+# run (including build)
+> nest start  
+ 
+# production mode
+> node dist/main
+```
+
+## Run the project using PM2 
 ```bash
 # Install PM2
 $ npm install pm2 -g  
