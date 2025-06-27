@@ -1,9 +1,17 @@
-## myNest  V1.4.9 
+## myNest  V1.5.0 
 
 ## Description
-- Configuration of a Docker-based backend service by linking Nest.JS with NginX  
-- Init creation  
+- Docker-based backend service Architecture example by linking Nest.JS with NginX  
+- Initial creation  
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+
+## Initial creation process  
+```bash
+$ npm i -g @nestjs/cli 
+$ nest new ssh_remote_docker 
+- Then some examples added.   
+- Added file by author: Dockerfile, ecosystem.config.js   
+```
 
 ## Project setup
 
@@ -83,7 +91,7 @@ $ sudo docker compose down
 $ sudo docker compose logs -f 
 ```
 
-## Quick Setup for installation : just follow below step 1~4. 
+## Quick Setup for installation : just follow below step 1~4. (Step3 is not essential.)
 ```bash
 # Step1. Launch a instance and setup
 - Ubuntu 24.04 with over 2vCPU / 4GB 
@@ -93,7 +101,6 @@ $ sudo docker compose logs -f
 cd ~ 
 git clone https://github.com/GaussJung/ssh_remote_docker
 cp -f ~/ssh_remote_docker/resource/shell/initBasicScript.sh  ~/. 
-
 rm -rf ~/ssh_remote_docker
 
 # Step3. Modify batch file (Optional)
@@ -103,12 +110,13 @@ vi initBasicScript.sh  :  you can modify parameter(ex:SRCHOME) and git-repositor
 chmod 755 initBasicScript.sh 
 ./initBasicScript.sh
 ```
-## Quick Setup for update   
+
+## Quick setup for update : just follow below step 1~3. (Step2 is not essential.)  
 ```bash
 # Step1. Copu update batch 
 cp -f ~/ssh_remote_docker/resource/shell/srcBasicDeploy.sh  ~/.  
  
-# Step3. Modify batch file (Optional)
+# Step2. Modify batch file (Optional)
 vi srcBasicDeploy.sh  :  you can modify parameter(ex:SRCHOME) and git-repository. 
 
 # Step3. Execute batch file 
@@ -116,7 +124,7 @@ chmod 755 srcBasicDeploy.sh
 ./srcBasicDeploy.sh 
 ```
 
-## Quick Setup for github action 
+## Quick setup for github action 
 - Create a github action file (Normal or Docker) 
 - Normal - [.github/workflows/master_deploy_normal.yml](resource/sample_action/master_deploy_normal.yml)   
 - Docker - [.github/workflows/master_deploy_docker.yml](resource/sample_action/master_deploy_docker.yml)   
