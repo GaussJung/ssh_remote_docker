@@ -1,4 +1,4 @@
-## myNest  V1.4.8 
+## myNest  V1.4.9 
 
 ## Description
 - Configuration of a Docker-based backend service by linking Nest.JS with NginX  
@@ -116,12 +116,11 @@ chmod 755 srcBasicDeploy.sh
 ./srcBasicDeploy.sh 
 ```
 
-## Quick Setup for github action (Normal or Docker)
-- Normal - [Create:.github/workflows/master_deploy_normal.yml](https://github.com/GaussJung/ssh_remote_docker/blob/9ad51e0453df505724eca90ca9873937ad2e0a5b/resource/sample_action/master_deploy_normal.yml)   
- 
-- Docker - [Create:.github/workflows/master_deploy_docker.yml](https://github.com/GaussJung/ssh_remote_docker/blob/9ad51e0453df505724eca90ca9873937ad2e0a5b/resource/sample_action/master_deploy_docker.yml)   
-
-- Before apply it, make github secrets and variables.      
+## Quick Setup for github action 
+- Create a github action file (Normal or Docker) 
+- Normal - [.github/workflows/master_deploy_normal.yml](resource/sample_action/master_deploy_normal.yml)   
+- Docker - [.github/workflows/master_deploy_docker.yml](resource/sample_action/master_deploy_docker.yml)   
+- Before apply it, make github secrets and variables.        
  
 ## Browser Result Test   
 ```bash
@@ -163,6 +162,7 @@ $ pnpm run test:cov
 - NestJS Document -  [https://docs.nestjs.com](https://docs.nestjs.com) 
 - Docker-Hub - [https://hub.docker.com/](https://hub.docker.com)
 - GitHub - [https://www.github.com/](https://www.github.com)
+- SSH-Action - [https://github.com/appleboy/ssh-action](https://github.com/appleboy/ssh-action)
    
 ## License
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
