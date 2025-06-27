@@ -3,8 +3,9 @@
 /node_modules
 /build
 
-# Init Instance Setup (including docker-hub pwd)
-/resource/shell/initScript.sh
+# Docker based init instance setup (including docker-hub pwd)
+/resource/shell/initDockerScript.sh
+/resource/shell/srcDockerDeploy.sh
 
 # Logs
 logs
