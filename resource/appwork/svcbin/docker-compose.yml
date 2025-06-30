@@ -12,6 +12,8 @@ services:
         image: nginx:alpine
         restart: unless-stopped
         container_name: webcont
+        environment:
+            - TZ=Etc/UTC        
         ports:
             - "80:80"
         volumes:
@@ -27,6 +29,7 @@ services:
         restart: unless-stopped
         container_name: fdbackendcont
         environment:
+            - TZ=Etc/UTC
             - LC_ALL=C.UTF-8
         expose:
             - "3000"

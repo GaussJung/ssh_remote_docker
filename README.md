@@ -1,4 +1,4 @@
-## myNest  V1.5.1 
+## myNest  V1.5.2 
 
 ## Description
 - Docker-based backend service Architecture example by linking Nest.JS with NginX  
@@ -175,7 +175,7 @@ $ pnpm run test:e2e
 # test coverage
 $ pnpm run test:cov
 ```
- 
+
 ## Resources
 - NestJS Website - [https://nestjs.com](https://nestjs.com/)
 - NestJS Document -  [https://docs.nestjs.com](https://docs.nestjs.com) 

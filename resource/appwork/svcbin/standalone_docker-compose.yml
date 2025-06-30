@@ -11,7 +11,7 @@ services:
         restart: unless-stopped
         container_name: fdbackendcont
         environment:
-            - TZ=Asia/Kolkata
+            - TZ=Etc/UTC      
             - LC_ALL=C.UTF-8
         ports:
             - 3000:3000
