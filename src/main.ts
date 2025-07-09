@@ -1,26 +1,48 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { NestExpressApplication } from '@nestjs/platform-express'; // add for trust proxy 
+import { NestExpressApplication } from '@nestjs/platform-express'; // add for trust proxy
 
 async function bootstrap() {
-
   console.log("========== START Main App =============");
 
-  // OLD.  const app = await NestFactory.create(AppModule);
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  // Setup for Express trust proxy ( for example to get real IP )
+  // Setup for Express trust proxy (for example to get real IP)
   app.use((req, res, next) => {
-     req.headers['x-forwarded-for'] = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-     next();
+    req.headers['x-forwarded-for'] =
+      req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    next();
   });
 
-  // Core block for trust proxy 
-  app.set('trust proxy', true);  
+  // Core block for trust proxy
+  app.set('trust proxy', true);
 
-  // OLD. await app.listen(process.env.PORT ?? 3000);
+  // ✅ CORS 설정 추가
+  const allowedOrigins = [
+    'https://front.fandom.live',
+    'https://www.fandom.live',
+    'http://localhost:3000', // 추가된 localhost:3000
+  ];
+
+  app.enableCors({
+    origin: (origin, callback) => {
+      if (!origin) {
+        return callback(null, true); // 비어 있으면 허용
+      }
+
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.startsWith('http://localhost')
+      ) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`CORS: Origin ${origin} is not allowed`));
+    },
+    credentials: true,
+  });
+
   await app.listen(3000);
-  
 }
 
 bootstrap();
