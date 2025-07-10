@@ -21,7 +21,9 @@ async function bootstrap() {
   const allowedOrigins = [
     'https://front.fandom.live',
     'https://www.fandom.live',
-    'http://localhost:3000', // 추가된 localhost:3000
+    'https://wwwdev.fandom.live',
+    'http://localhost:3000', // for localhost:3000
+    'http://localhost', // for localhost (80포트)
   ];
 
   app.enableCors({
