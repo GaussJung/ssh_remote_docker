@@ -1,4 +1,4 @@
-## myNest  V1.5.6
+## myNest  V1.5.7
 
 ## Description
 - Docker-based backend service Architecture example by linking Nest.JS with NginX  
@@ -10,8 +10,16 @@
 $ npm i -g @nestjs/cli 
 $ nest new ssh_remote_docker 
 - Then some examples added.   
-- Added file by author: Dockerfile, ecosystem.config.js   
+- Added file by author: Dockerfile, ecosystem.config.js  
+- Condition
+
+# Simple usage 
+app.module_Basic.ts will be changed to app.module.ts and edited.
+
+# DB CRUD usage 
+app.module_DB.ts will be changed to app.module.ts and edited. 
 ```
+
 
 ## Project setup
 
