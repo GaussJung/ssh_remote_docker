@@ -1,4 +1,4 @@
-## myNest  V1.5.5
+## myNest  V1.5.6
 
 ## Description
 - Docker-based backend service Architecture example by linking Nest.JS with NginX  
@@ -22,6 +22,11 @@ $ pnpm install
 ## Compile and run the project  
 
 ```bash
+
+# Required package install
+pnpm add @nestjs/typeorm @nestjs/config
+pnpm add pg
+
 # build only 
 $ pnpm build 
 

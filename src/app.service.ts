@@ -51,7 +51,7 @@ export class AppService {
   // Get Date Simple (with version) 
   getDate(): string {
     const dateString  = new Date().toISOString(); 
-    const versionString = "V1.5.5"; 
+    const versionString = "V1.5.6"; 
     console.log("AppService L30. " + versionString + " Now : " + dateString ); 
     return versionString + " >> Now : " + dateString;
   };

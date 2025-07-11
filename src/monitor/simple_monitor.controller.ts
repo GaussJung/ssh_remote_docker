@@ -3,7 +3,7 @@
 - Logic is processed in Monitor Service after triggered by main.js 
 */
 import { Controller, Get } from '@nestjs/common';
-import { MonitorService } from './app.monitor.service';
+import { MonitorService } from './monitor.service';
  
 @Controller('monitor')
 export class MonitorController {

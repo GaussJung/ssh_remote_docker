@@ -29,19 +29,19 @@ export class AppController {
   // HealthCheck using import service library 
   // Show Health Status : request path >> http://example.com:3000/health 
   // if 'OK' then status is normal 
-  @Get('/health')
+  @Get('health')
   healthCheck(): string {
     return this.appService.getHealthStatus();  
   };
  
   // Show  IP  : request path >> http://example.com:3000/ip
-  @Get('/ip')
+  @Get('ip')
   getIP(@Req() req: Request): { clientIp: string } {
     return this.appService.getIP(req);
   }
 
   // Show Date : request path >> http://example.com:3000/date 
-  @Get('/date')
+  @Get('date')
   getDate(): string {
     return this.appService.getDate();
   };
@@ -57,7 +57,7 @@ export class AppController {
   // Sample Date :   {"TimeZone": "Asia/Seoul", "DateTime": "20250601-123309", "UTC": "20250601-033309"}
  
   // Show Time : request path >> http://example.com:3000/time 
-  @Get('/time')
+  @Get('time')
   getDateTime(): { TimeZone: string; DateTime: string; UTC: string } {
     return this.appService.getDateTime();
   }
