@@ -1,22 +1,26 @@
-// src/monitor/monitor.controller.ts
-import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
+/*
+- Monigoring Contoller with Monitor Service ( file : app.monitor.service.js ) 
+- Logic is processed in Monitor Service after triggered by main.js 
+*/
+import { Controller, Get } from '@nestjs/common';
 import { MonitorService } from './monitor.service';
-
-@Controller('monitor') // /monitor 경로
+ 
+@Controller('monitor')
 export class MonitorController {
-  constructor(private readonly monitorService: MonitorService) {}
 
-  @Get('cpu')
-  @HttpCode(HttpStatus.OK)
-  async getCpuUsage(): Promise<{ 'cpu-usage': number }> {
-    const cpuUsage = await this.monitorService.getCpuUsage();
-    return { 'cpu-usage': Number(cpuUsage.toFixed(2)) }; // 두 자리 소수점으로 강제
+  // Initial construction 
+  constructor(private readonly monitorService: MonitorService) {}
+  
+  // Show CPU-Usage Information : request path >> http://example.com:3000/monitor/cpu 
+  @Get('/cpu')
+  ShowCpuUsage(): any {
+    return this.monitorService.getCpuUsage();
   }
 
-  @Get('memory')
-  @HttpCode(HttpStatus.OK)
-  async getMemoryUsage(): Promise<{ 'memory-usage': number }> {
-    const memoryUsage = await this.monitorService.getMemoryUsage();
-    return { 'memory-usage': memoryUsage };
+  // Show Memory-Usage Information :request path >> http://example.com:3000/monitor/memory  
+  @Get('/memory')
+  ShowMemoryUsage(): any {
+    return this.monitorService.getMemoryUsage();
   }
 }
+ 
