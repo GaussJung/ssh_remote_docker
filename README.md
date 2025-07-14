@@ -1,4 +1,4 @@
-## myNest  V1.6.5
+## myNest  V1.6.6
 
 ## Description
 - Docker-based backend service Architecture example by linking Nest.JS with NginX  
