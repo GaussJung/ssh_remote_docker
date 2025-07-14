@@ -57,9 +57,7 @@ jobs:
             cd ${{ secrets.DOCKER_COMPOSE_ROOT }}  
             sudo docker compose down 
             sleep 1
-            # Update .env.production file : for production environment
-            # echo "${{ secrets.DOTENV_FILE_CONTENT }}" > .env.production
-            sudo docker rmi -f ${{ secrets.DOCKER_REPOSITORY }}:latest  
+            sudo docker rmi -f ${{ secrets.DOCKER_REPOSITORY }}:latest || true:  
             sleep 1
             sudo docker compose up -d 
             
