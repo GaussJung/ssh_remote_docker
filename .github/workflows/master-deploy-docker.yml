@@ -37,7 +37,12 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_REPOSITORY }}:latest
 
-      # Step3. Run remote shell using ssh 
+      # Step3. Create .env.production file on runner
+      - name: Create .env.production file on runner  
+        run: |
+          echo "${{ secrets.PROD_ENV_CONTENT }}" > .env.production
+
+      # Step4. Run remote shell using ssh 
       - name: execute remote ssh
         uses: appleboy/ssh-action@master
         with:
@@ -45,13 +50,15 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           port: ${{ secrets.SERVER_PORT }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
+          source: ".env.production" # File by Actions Runner 
+          target: "${{ secrets.DOCKER_COMPOSE_ROOT }}/.env.production" # .absolute path on remote server          
           script: |
             echo " ========== START of Deployment ==========="
             cd ${{ secrets.DOCKER_COMPOSE_ROOT }}  
             sudo docker compose down 
             sleep 1
             # Update .env.production file : for production environment
-            echo "${{ secrets.DOTENV_FILE_CONTENT }}" > .env.production
+            # echo "${{ secrets.DOTENV_FILE_CONTENT }}" > .env.production
             sudo docker rmi -f ${{ secrets.DOCKER_REPOSITORY }}:latest  
             sleep 1
             sudo docker compose up -d 
