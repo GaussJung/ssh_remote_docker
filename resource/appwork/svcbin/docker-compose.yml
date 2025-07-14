@@ -13,7 +13,7 @@ services:
         restart: unless-stopped
         container_name: webcont
         environment:
-            - TZ=Etc/UTC        
+            - TZ=Etc/UTC
         ports:
             - "80:80"
         volumes:
@@ -33,11 +33,11 @@ services:
             - LC_ALL=C.UTF-8
         expose:
             - "3000"
+        env_file:
+            - ./.env.productiion
         networks:
             - svc-network
 
 networks:
     svc-network:
         driver: bridge
-
-

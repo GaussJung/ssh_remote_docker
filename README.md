@@ -1,4 +1,4 @@
-## myNest  V1.5.8
+## myNest  V1.6.1
 
 ## Description
 - Docker-based backend service Architecture example by linking Nest.JS with NginX  
@@ -18,6 +18,9 @@ app.module_Basic.ts will be changed to app.module.ts and edited.
 
 # DB CRUD usage 
 app.module_DB.ts will be changed to app.module.ts and edited. 
+
+pnpm add @nestjs/typeorm typeorm pg @nestjs/config class-validator class-transformer @nestjs/mapped-types
+
 ```
 
 
@@ -34,6 +37,7 @@ $ pnpm install
 # Required package install
 pnpm add @nestjs/typeorm @nestjs/config
 pnpm add pg
+pnpm add class-validator class-transformer
 
 # build only 
 $ pnpm build 

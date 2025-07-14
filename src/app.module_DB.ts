@@ -3,11 +3,13 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-// 기존에 제공되었던 Fruit 모듈
-// import { FruitModule } from './fruit/fruit.module';
-// 이전 답변에서 추가된 Company 모듈
+// Fruit 모듈
+import { FruitModule } from './fruit/fruit.module';
+
+// Company 모듈
 // import { CompanyModule } from './company/company.module';
-// 이전 답변에서 추가된 Monitor 모듈 (app.monitor.controller/service 파일이 이제 monitor/ 폴더 안으로 이동했다고 가정)
+
+// Monitor 모듈 : 모니터링 기능을 담당하는 모듈
 import { MonitorModule } from './monitor/monitor.module';
 
 @Module({
@@ -33,8 +35,8 @@ import { MonitorModule } from './monitor/monitor.module';
       }),
     }),
     // --- 애플리케이션의 주요 기능/도메인 모듈들을 여기에 임포트 ---
-    //FruitModule,    // 과일 관련 기능 모듈
-    //CompanyModule,  // 회사 정보 관련 기능 모듈
+    FruitModule,    // 과일 관련 기능 모듈
+    // CompanyModule,  // 회사 정보 관련 기능 모듈
     MonitorModule,  // 시스템 모니터링 기능 모듈
   ],
   // 루트 AppController와 AppService는 더 이상 특정 비즈니스 로직을 담당하지 않고
