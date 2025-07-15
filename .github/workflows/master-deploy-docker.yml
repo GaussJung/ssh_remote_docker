@@ -40,14 +40,28 @@ jobs:
 
       # Step3. Prepare combined .env.production content on runner
       - name: Prepare combined .env.production content
-        id: prepare_env
         run: |
           echo "${{ secrets.PROD_ENV_CONTENT }}" > combined_env.txt
           cat .env >> combined_env.txt
-          echo "Combined .env.production content created."
+          echo "✅ Combined .env.production content created."
 
-      # Step4. Send combined .env.production content via SSH
-      - name: Deploy and restart via SSH
+      # Step4. Check combined_env.txt on runner
+      - name: Check combined_env.txt
+        run: ls -l combined_env.txt
+
+      # Step5. Upload combined_env.txt to server as .env.production
+      - name: Upload .env.production to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ vars.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          port: ${{ secrets.SERVER_PORT }}
+          key: ${{ secrets.REMOTE_SSH_KEY }}
+          source: combined_env.txt
+          target: ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env.production
+
+      # Step6. Restart services via SSH
+      - name: Restart services on server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ vars.SERVER_IP }}
@@ -55,10 +69,6 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script: |
-            echo "========== Writing .env.production =========="
-            > ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env.production
-            cat combined_env.txt >> ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env.production
-
             echo "========== START of Deployment =========="
             cd ${{ secrets.DOCKER_COMPOSE_ROOT }}
             sudo docker compose down
@@ -66,4 +76,4 @@ jobs:
             sudo docker rmi -f ${{ secrets.DOCKER_REPOSITORY }}:latest || true
             sleep 1
             sudo docker compose up -d
-
+            echo "========== END of Deployment =========="
