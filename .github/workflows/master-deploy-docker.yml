@@ -38,10 +38,18 @@ jobs:
           tags: ${{ secrets.DOCKER_REPOSITORY }}:latest
 
       # Step3. Create .env.production file on runner
-      - name: Create .env.production file on runner  
-        run: |
-          echo "${{ secrets.PROD_ENV_CONTENT }}" > .env.production
+      #- name: Create .env.production file on runner  
+      #  run: |
+      #  echo "${{ secrets.PROD_ENV_CONTENT }}" > .env.production
 
+      # Step3. Read .env from repo and combine with PROD_ENV_CONTENT
+      - name: Prepare combined .env.production content
+        id: prepare_env
+        run: |
+          echo "${{ secrets.PROD_ENV_CONTENT }}" > combined_env.txt
+          cat .env >> combined_env.txt
+          echo "Combined .env.production content created."
+ 
       # Step4. Run remote shell using ssh 
       - name: execute remote ssh
         uses: appleboy/ssh-action@master
@@ -50,9 +58,14 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           port: ${{ secrets.SERVER_PORT }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
-          source: ".env.production" # File by Actions Runner 
-          target: "${{ secrets.DOCKER_COMPOSE_ROOT }}/.env.production" # .absolute path on remote server          
+          #source: ".env.production" # File by Actions Runner 
+          #target: "${{ secrets.DOCKER_COMPOSE_ROOT }}/.env.production" # .absolute path on remote server          
           script: |
+            echo "========== Writing .env.production =========="
+            cat <<EOF > ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env.production
+            $(cat combined_env.txt)
+            EOF
+
             echo " ========== START of Deployment ==========="
             cd ${{ secrets.DOCKER_COMPOSE_ROOT }}  
             sudo docker compose down 
