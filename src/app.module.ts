@@ -13,6 +13,13 @@ import { RootModule } from './root/root.module'; // 👈 root 모듈 import
 
 import { getTypeOrmConfig } from './config/typeorm.config'; // TypeORM 설정
 
+// dotenv 설정을 통해 .env 파일을 로드 
+import * as dotenv from 'dotenv';
+dotenv.config(); // Loading .env file at the start
+
+// console.log('======== .env value print : very useful ========');
+// console.log(process.env);
+ 
 @Module({
   imports: [
     /**
@@ -23,7 +30,15 @@ import { getTypeOrmConfig } from './config/typeorm.config'; // TypeORM 설정
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: (() => {
-        const nodeEnv = process.env.NODE_ENV || 'development';
+
+        // console.log(`CHECK Before NODE_ENV: ${process.env.NODE_ENV}`);
+
+        // const nodeEnv = process.env.NODE_ENV || 'development';
+
+        const nodeEnv  = process.env.NODE_ENV || 'development'; // 기본값을 'development'로 설정
+
+        console.log(` ========= CHECK NODE_ENV: ${nodeEnv} =========`);
+ 
         const envFiles = ['.env'];
 
         switch (nodeEnv) {
