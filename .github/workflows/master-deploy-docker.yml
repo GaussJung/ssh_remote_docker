@@ -38,7 +38,18 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_REPOSITORY }}:latest
 
-      # Step3. Deploy to server & write .env.production & restart
+      # Step4.  Upload .env using scp
+      - name: Upload .env file
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ vars.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          port: ${{ secrets.SERVER_PORT }}
+          key: ${{ secrets.REMOTE_SSH_KEY }}
+          source: .env
+          target: ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env
+
+      # Step5. Deploy to server & write .env.production & restart
       - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
