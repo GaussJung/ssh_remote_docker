@@ -38,24 +38,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_REPOSITORY }}:latest
 
-      # Step3. Prepare .env.production content on runner
-      - name: Prepare .env.production content
-        id: prepare_env
-        run: |
-          echo "${{ secrets.DOTENV_FILE_CONTENT }}" > .env.production
-          cat .env >> .env.production
-          echo "Combined .env.production created."
-          ls -l .env.production
-
-      # Step4. Read .env.production into job output
-      - name: Read .env.production content into output
-        id: read_env
-        run: |
-          echo "DOTENV_CONTENT<<EOF" >> $GITHUB_OUTPUT
-          cat .env.production >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-      # Step5. Deploy to server & write .env.production & restart
+      # Step3. Deploy to server & write .env.production & restart
       - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
@@ -65,7 +48,7 @@ jobs:
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script: |
             echo "========== Writing .env.production =========="
-            printf "%s\n" "${{ steps.read_env.outputs.DOTENV_CONTENT }}" > ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env.production
+            printf "%s\n" "${{ secrets.DOTENV_FILE_CONTENT }}" > ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env.production
 
             echo "========== START of Deployment =========="
             cd ${{ secrets.DOCKER_COMPOSE_ROOT }}
@@ -74,3 +57,5 @@ jobs:
             sudo docker rmi -f ${{ secrets.DOCKER_REPOSITORY }}:latest || true
             sleep 1
             sudo docker compose up -d
+            sudo docker ps -a
+            echo "========== END of Deployment =========="
