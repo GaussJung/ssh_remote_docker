@@ -38,34 +38,25 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_REPOSITORY }}:latest
 
-      # Step3. Prepare .env.production file on runner
+      # Step3. Prepare .env.production content on runner
       - name: Prepare .env.production content
+        id: prepare_env
         run: |
           echo "${{ secrets.DOTENV_FILE_CONTENT }}" > .env.production
           cat .env >> .env.production
           echo "Combined .env.production created."
-
-      # Step4. Check .env.production file on runner
-      - name: Check .env.production
-        run: |
-          echo "======= Checking .env.production ======="
           ls -l .env.production
-          echo "========== FILE CONTENT =========="
-          cat .env.production
 
-      # Step5. Upload .env.production to server
-      - name: Upload .env.production to server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ vars.SERVER_IP }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          port: ${{ secrets.SERVER_PORT }}
-          key: ${{ secrets.REMOTE_SSH_KEY }}
-          source: .env.production
-          target: ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env.production
+      # Step4. Read .env.production into job output
+      - name: Read .env.production content into output
+        id: read_env
+        run: |
+          echo "DOTENV_CONTENT<<EOF" >> $GITHUB_OUTPUT
+          cat .env.production >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-      # Step6. Restart services via SSH
-      - name: Restart services on server
+      # Step5. Deploy to server & write .env.production & restart
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ vars.SERVER_IP }}
@@ -73,6 +64,9 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script: |
+            echo "========== Writing .env.production =========="
+            printf "%s\n" "${{ steps.read_env.outputs.DOTENV_CONTENT }}" > ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env.production
+
             echo "========== START of Deployment =========="
             cd ${{ secrets.DOCKER_COMPOSE_ROOT }}
             sudo docker compose down
