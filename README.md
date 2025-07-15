@@ -1,4 +1,4 @@
-## myNest  V1.0.3
+## myNest  V1.0.5
 
 ## Description
 - Docker-based backend service Architecture example by linking Nest.JS with NginX  
@@ -40,16 +40,16 @@ pnpm add pg
 pnpm add class-validator class-transformer
 
 # build only 
-$ pnpm build 
+$ pnpm build ( = npm run build )
 
 # development (including build)
-$ pnpm run start  
+$ pnpm run start   ( = npm run start )
 
-# watch mode
-$ pnpm run start:dev
+# dev(watch) mode
+$ pnpm run start:dev  ( = npm run start:dev  )
 
 # production mode
-$ pnpm run start:prod ( same to $ node dist/main )
+$ pnpm run start:prod ( = node dist/main )
 ```
 
 ## Compile and run in case of error with window OS   
