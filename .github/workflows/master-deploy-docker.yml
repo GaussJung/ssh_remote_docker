@@ -47,7 +47,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
           source: .env
-          target: ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env
+          target: ${{ secrets.DOCKER_COMPOSE_ROOT }}/
 
       # Step5. Deploy to server & write .env.production & restart
       - name: Deploy via SSH
