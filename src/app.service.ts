@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Request } from 'express';
+import * as dotenv from 'dotenv';
+
+dotenv.config(); // .env를 로드
+
+console.log(`======== Current VERSION: ${process.env.version} ==========`) ;
  
 @Injectable()
 export class AppService {
@@ -7,8 +12,9 @@ export class AppService {
   // Say Hello! 
   getHello(): string {
     const currentTimeMilliseconds = Date.now();
-    console.log("AppService L1. Request TimeMill=" + currentTimeMilliseconds);
-    return 'Hello My Nest! ';
+    const versionInfo = process.env.version || 'Init Nest App';
+    console.log("AppService L1. " + versionInfo + " >> TimeMill=" + currentTimeMilliseconds);
+    return versionInfo;
   };
 
   // Health Check 
@@ -51,9 +57,8 @@ export class AppService {
   // Get Date Simple (with version) 
   getDate(): string {
     const dateString  = new Date().toISOString(); 
-    const versionString = "V1.6.7"; 
-    console.log("AppService L30. " + versionString + " Now : " + dateString ); 
-    return versionString + " >> Now : " + dateString;
+     console.log("AppService L30.  Now : " + dateString ); 
+    return  " >> Now : " + dateString;
   };
 
   // Get DateTime and return JSON with system TimeZone and UTC

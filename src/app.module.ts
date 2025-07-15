@@ -1,4 +1,4 @@
-// src/app.module.ts (최종 리팩토링 제안 버전)
+// src/app.module.ts
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,35 +10,65 @@ import { FruitModule } from './fruit/fruit.module';
 // import { CompanyModule } from './company/company.module'; // 필요 시 주석 해제하여 사용
 import { MonitorModule } from './monitor/monitor.module';
 
-import { getTypeOrmConfig } from './config/typeorm.config'; // TypeORM 설정 파일을 분리
+import { getTypeOrmConfig } from './config/typeorm.config'; // TypeORM 설정 파일
 
 @Module({
   imports: [
-    // 환경 변수 모듈 설정 (애플리케이션 전역에서 사용 가능)
+    /**
+     * ConfigModule 설정
+     * 1. 공통 설정(.env)을 먼저 로드
+     * 2. NODE_ENV 값에 따라 환경별 설정(.env.development, .env.production, .env.test)로 override
+     * 
+     * NODE_ENV 값이 없으면 기본값은 development
+     */
     ConfigModule.forRoot({
       isGlobal: true,
-      // 개발 환경에서는 '.env'와 '.env.development' 파일을 로드합니다.
-      // Docker Compose (프로덕션 환경)에서는 'env_file'을 통해 환경 변수가 직접 주입되므로,
-      // 여기서는 별도의 파일을 명시적으로 로드하지 않습니다.
-      envFilePath: ['.env', '.env.development'], 
+      envFilePath: (() => {
+        const nodeEnv = process.env.NODE_ENV || 'development';
+        const envFiles = ['.env']; // always load base
+
+        switch (nodeEnv) {
+          case 'production':
+            envFiles.push('.env.production');
+            break;
+          case 'test':
+            envFiles.push('.env.test');
+            break;
+          case 'development':
+          default:
+            envFiles.push('.env.development');
+            break;
+        }
+
+        return envFiles;
+      })(),
     }),
 
-    // TypeORM 데이터베이스 연결 설정 로드 (별도 파일로 분리하여 관리)
+    /**
+     * TypeORM 연결 설정
+     */
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: getTypeOrmConfig, // 분리된 설정 함수를 사용
+      useFactory: getTypeOrmConfig,
     }),
 
-    // 애플리케이션의 기능별/도메인별 모듈들을 임포트
+    /**
+     * 도메인별 모듈
+     */
     FruitModule,
-    // CompanyModule, // 필요 시 주석 해제하여 사용
+    // CompanyModule,
     MonitorModule,
   ],
-  // 루트 레벨의 컨트롤러: 전역적인 유틸리티 API (헬스 체크, IP, 시간 등)
+
+  /**
+   * 루트 컨트롤러
+   */
   controllers: [AppController],
-  
-  // 루트 레벨의 프로바이더: AppController에 대한 서비스 로직
+
+  /**
+   * 루트 프로바이더
+   */
   providers: [AppService],
 })
 export class AppModule {}
