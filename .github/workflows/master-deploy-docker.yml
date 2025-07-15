@@ -8,27 +8,28 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest  
+
     steps:
-      # Step1. Source CheckOut ( v3 )
+      # Step1. Source CheckOut
       - name: Checkout source code
         uses: actions/checkout@v3
 
-      # Step2-A. Docker Multi-Arch Docker Image
-      - name: Set up QEMU (for cross-building)
+      # Step2-A. QEMU for cross-building
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-      # Step2-B. Docker Build Setup  
+      # Step2-B. Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Step2-C. Docker Hub Login 
-      - name: Login docker hub
+      # Step2-C. Docker Hub Login
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Step2-D. Docker Image Push     
+      # Step2-D. Build & Push Docker Image
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
         with:
@@ -37,40 +38,40 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_REPOSITORY }}:latest
 
-      # Step3. Create .env.production file on runner
-      #- name: Create .env.production file on runner  
-      #  run: |
-      #  echo "${{ secrets.PROD_ENV_CONTENT }}" > .env.production
-
-      # Step3. Read .env from repo and combine with PROD_ENV_CONTENT
+      # Step3. Prepare combined .env.production content
       - name: Prepare combined .env.production content
         id: prepare_env
         run: |
           echo "${{ secrets.PROD_ENV_CONTENT }}" > combined_env.txt
           cat .env >> combined_env.txt
-          echo "Combined .env.production content created."
- 
-      # Step4. Run remote shell using ssh 
-      - name: execute remote ssh
+          echo "✅ Combined .env.production content created."
+
+      # Step4. Load combined_env.txt into env variable
+      - name: Load combined_env content into env
+        id: load_env
+        run: |
+          echo "combined_env<<EOF" >> $GITHUB_ENV
+          cat combined_env.txt >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      # Step5. Run remote shell using SSH
+      - name: Execute remote SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ vars.SERVER_IP }}
           username: ${{ secrets.SERVER_USERNAME }}
           port: ${{ secrets.SERVER_PORT }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
-          #source: ".env.production" # File by Actions Runner 
-          #target: "${{ secrets.DOCKER_COMPOSE_ROOT }}/.env.production" # .absolute path on remote server          
           script: |
             echo "========== Writing .env.production =========="
             cat <<EOF > ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env.production
-            $(cat combined_env.txt)
+            ${{ env.combined_env }}
             EOF
 
-            echo " ========== START of Deployment ==========="
-            cd ${{ secrets.DOCKER_COMPOSE_ROOT }}  
-            sudo docker compose down 
+            echo "========== START of Deployment =========="
+            cd ${{ secrets.DOCKER_COMPOSE_ROOT }}
+            sudo docker compose down
             sleep 1
-            sudo docker rmi -f ${{ secrets.DOCKER_REPOSITORY }}:latest || true:  
+            sudo docker rmi -f ${{ secrets.DOCKER_REPOSITORY }}:latest || true
             sleep 1
-            sudo docker compose up -d 
-            
+            sudo docker compose up -d
