@@ -38,7 +38,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_REPOSITORY }}:latest
 
-      # Step3. Upload .env to server
+      # Step4.  Upload .env using scp
       - name: Upload .env file
         uses: appleboy/scp-action@master
         with:
@@ -49,15 +49,7 @@ jobs:
           source: .env
           target: ${{ secrets.DOCKER_COMPOSE_ROOT }}/
 
-      # Step4. Read NODE_ENV from .env
-      - name: Read NODE_ENV from .env
-        id: read_node_env
-        run: |
-          NODE_ENV=$(sed -nE 's/^NODE_ENV\s*=\s*//p' .env)
-          echo "Detected NODE_ENV: $NODE_ENV"
-          echo "NODE_ENV=$NODE_ENV" >> $GITHUB_OUTPUT
-
-      # Step5. Deploy via SSH
+      # Step5. Deploy to server & write .env.production & restart
       - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
@@ -66,32 +58,15 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script: |
-            echo "========== A. START of Deployment =========="
+            echo "========== Writing .env.production =========="
+            printf "%s\n" "${{ secrets.DOTENV_FILE_CONTENT }}" > ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env.production
+
+            echo "========== START of Deployment =========="
             cd ${{ secrets.DOCKER_COMPOSE_ROOT }}
             sudo docker compose down
-            sleep 1            
-            
-            echo "========== B. Writing environment file =========="
-            NodeModeValue="${{ steps.read_node_env.outputs.NODE_ENV }}"
-            echo "NODE_ENV is set to: $NodeModeValue"
-            
-            if [ "${NodeModeValue}" = "development" ]; then
-              printf "%s\n" "${{ secrets.DOTENV_DEV_CONTENT }}" > ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env_node 
-            elif [ "${NodeModeValue}" = "test" ]; then
-              printf "%s\n" "${{ secrets.DOTENV_TEST_CONTENT }}" > ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env_node 
-            elif [ "${NodeModeValue}" = "production" ]; then
-              printf "%s\n" "${{ secrets.DOTENV_PROD_CONTENT }}" > ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env_node 
-            else
-              echo "NODE_ENV is not set to a recognized value. Defaulting to development."
-              printf "%s\n" "${{ secrets.DOTENV_DEV_CONTENT }}" > ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env_node 
-            fi
-
-            echo "========== C. Remove Application Docker Image =========="
+            sleep 1
             sudo docker rmi -f ${{ secrets.DOCKER_REPOSITORY }}:latest || true
             sleep 1
-
-            echo "========== D. Startup Docker Container ==========" 
-
             sudo docker compose up -d
             sudo docker ps -a
             echo "========== END of Deployment =========="
