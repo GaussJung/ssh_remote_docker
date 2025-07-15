@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest  
 
     steps:
-      # Step1. Source CheckOut
+      # Step1. Checkout source code
       - name: Checkout source code
         uses: actions/checkout@v3
 
@@ -38,18 +38,22 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_REPOSITORY }}:latest
 
-      # Step3. Prepare combined .env.production content on runner
-      - name: Prepare combined .env.production content
+      # Step3. Prepare .env.production file on runner
+      - name: Prepare .env.production content
         run: |
-          echo "${{ secrets.PROD_ENV_CONTENT }}" > combined_env.txt
-          cat .env >> combined_env.txt
-          echo "✅ Combined .env.production content created."
+          echo "${{ secrets.DOTENV_FILE_CONTENT }}" > .env.production
+          cat .env >> .env.production
+          echo "Combined .env.production created."
 
-      # Step4. Check combined_env.txt on runner
-      - name: Check combined_env.txt
-        run: ls -l combined_env.txt
+      # Step4. Check .env.production file on runner
+      - name: Check .env.production
+        run: |
+          echo "======= Checking .env.production ======="
+          ls -l .env.production
+          echo "========== FILE CONTENT =========="
+          cat .env.production
 
-      # Step5. Upload combined_env.txt to server as .env.production
+      # Step5. Upload .env.production to server
       - name: Upload .env.production to server
         uses: appleboy/scp-action@master
         with:
@@ -57,7 +61,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           port: ${{ secrets.SERVER_PORT }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
-          source: combined_env.txt
+          source: .env.production
           target: ${{ secrets.DOCKER_COMPOSE_ROOT }}/.env.production
 
       # Step6. Restart services via SSH
@@ -76,4 +80,3 @@ jobs:
             sudo docker rmi -f ${{ secrets.DOCKER_REPOSITORY }}:latest || true
             sleep 1
             sudo docker compose up -d
-            echo "========== END of Deployment =========="
