@@ -7,25 +7,24 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { FruitModule } from './fruit/fruit.module';
-// import { CompanyModule } from './company/company.module'; // 필요 시 주석 해제하여 사용
+// import { CompanyModule } from './company/company.module'; // enable if needed
 import { MonitorModule } from './monitor/monitor.module';
+import { RootModule } from './root/root.module'; // 👈 root 모듈 import
 
-import { getTypeOrmConfig } from './config/typeorm.config'; // TypeORM 설정 파일
+import { getTypeOrmConfig } from './config/typeorm.config'; // TypeORM 설정
 
 @Module({
   imports: [
     /**
-     * ConfigModule 설정
-     * 1. 공통 설정(.env)을 먼저 로드
-     * 2. NODE_ENV 값에 따라 환경별 설정(.env.development, .env.production, .env.test)로 override
-     * 
-     * NODE_ENV 값이 없으면 기본값은 development
+     * Global ConfigModule
+     * - Loads .env by default
+     * - Overrides with NODE_ENV specific files
      */
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: (() => {
         const nodeEnv = process.env.NODE_ENV || 'development';
-        const envFiles = ['.env']; // always load base
+        const envFiles = ['.env'];
 
         switch (nodeEnv) {
           case 'production':
@@ -45,7 +44,7 @@ import { getTypeOrmConfig } from './config/typeorm.config'; // TypeORM 설정 �
     }),
 
     /**
-     * TypeORM 연결 설정
+     * TypeORM connection
      */
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -54,20 +53,25 @@ import { getTypeOrmConfig } from './config/typeorm.config'; // TypeORM 설정 �
     }),
 
     /**
-     * 도메인별 모듈
+     * Domain modules
      */
     FruitModule,
     // CompanyModule,
     MonitorModule,
+
+    /**
+     * Root module (utility services)
+     */
+    RootModule, // for ROOT 
   ],
 
   /**
-   * 루트 컨트롤러
+   * Root controller
    */
   controllers: [AppController],
 
   /**
-   * 루트 프로바이더
+   * Root-level services
    */
   providers: [AppService],
 })

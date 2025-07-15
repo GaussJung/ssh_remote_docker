@@ -1,0 +1,37 @@
+services:
+
+    web-svc:
+        image: nginx:alpine
+        restart: unless-stopped
+        container_name: webcont
+        environment:
+            - TZ=Etc/UTC
+        ports:
+            - "80:80"
+        volumes:
+            - /appwork/svdata/logs:/var/log/nginx
+            - /appwork/svdata/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - app-svc
+        networks:
+            - svc-network
+
+    app-svc:
+        image: myfandom/fdbackend:latest
+        restart: unless-stopped
+        container_name: fdbackendcont
+        environment:
+            - TZ=Etc/UTC
+            - LC_ALL=C.UTF-8
+            - NODE_ENV=production
+        expose:
+            - "3000"
+        env_file:
+            - ./.env
+            - ./.env.production
+        networks:
+            - svc-network
+
+networks:
+    svc-network:
+        driver: bridge
