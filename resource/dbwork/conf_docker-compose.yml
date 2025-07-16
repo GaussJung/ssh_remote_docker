@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-server
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+      - ./db/conf/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - ./db/conf/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./db/init:/docker-entrypoint-initdb.d/
