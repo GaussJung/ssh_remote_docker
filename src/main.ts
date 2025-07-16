@@ -1,7 +1,11 @@
+// 🌟 .env를 가장 먼저 로드
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express'; // add for trust proxy
-
+ 
 async function bootstrap() {
   console.log("========== START Main App =============");
 

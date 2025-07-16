@@ -12,12 +12,8 @@ import { MonitorModule } from './monitor/monitor.module';
 import { RootModule } from './root/root.module'; // 👈 root 모듈 import
 
 import { getTypeOrmConfig } from './config/typeorm.config'; // TypeORM 설정
-
-// dotenv 설정을 통해 .env 파일을 로드 
-import * as dotenv from 'dotenv';
-dotenv.config(); // Loading .env file at the start
-
-// console.log('======== .env value print : very useful ========');
+ 
+// console.log('======== .env   value print : very useful ========');
 // console.log(process.env);
  
 @Module({
@@ -29,9 +25,7 @@ dotenv.config(); // Loading .env file at the start
      */
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: (() => {
-
-        // console.log(`CHECK Before NODE_ENV: ${process.env.NODE_ENV}`);
+        envFilePath: (() => {
 
         // const nodeEnv = process.env.NODE_ENV || 'development';
 
