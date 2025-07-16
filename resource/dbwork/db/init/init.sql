@@ -50,6 +50,9 @@ CREATE TABLE fruit (
     name TEXT NOT NULL
 );
 
+-- Change table owner to dbuser
+ALTER TABLE fruit OWNER TO dbuser;
+
 INSERT INTO fruit (name) VALUES
 ('Apple'),
 ('Banana'),
@@ -75,6 +78,9 @@ CREATE TABLE company (
     industry VARCHAR(200),
     remarks TEXT DEFAULT NULL
 );
+
+-- Change table owner to dbuser
+ALTER TABLE company OWNER TO dbuser;
 
 INSERT INTO company (cid, cname, cphone, industry, remarks) VALUES
 (10100, 'Fast Shopper', '+862319092222', 'Retail', NULL),

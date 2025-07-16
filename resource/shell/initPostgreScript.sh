@@ -57,4 +57,9 @@ sudo apt-get install -y docker-compose
 rm get-docker.sh
 sleep 1
 
+# Install PostgreSQL client
+sudo apt install postgresql-client -y
+
+
+
  
