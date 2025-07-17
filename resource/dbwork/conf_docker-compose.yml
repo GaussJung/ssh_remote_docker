@@ -11,4 +11,4 @@ services:
       - ./db/data:/var/lib/postgresql/data
       - ./db/conf/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
       - ./db/conf/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-      - ./db/init:/docker-entrypoint-initdb.d/
+      - ./db/init:/docker-entrypoint-initdb.d
