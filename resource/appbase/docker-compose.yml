@@ -13,6 +13,7 @@ services:
       apk add --no-cache libc6-compat &&
       corepack enable pnpm &&
       pnpm install &&
+      pnpm build &&
       npm install -g pm2 &&
       pm2-runtime start ecosystem.config.js
       "

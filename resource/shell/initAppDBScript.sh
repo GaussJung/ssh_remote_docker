@@ -195,3 +195,12 @@ ls -al >> $log_file
 echo "============ Application Setup Completed =============="
 # Final Message  
 echo  "============ End of Setting Environment =============="
+
+echo  "Version : http://$PUBLIC_IP"
+echo  "Health Check : http://$PUBLIC_IP/health"
+echo  "Timp Check : http://$PUBLIC_IP/time"
+echo  "IP Check : http://$PUBLIC_IP/ip"
+echo  "Databse Check : http://$PUBLIC_IP/fruits"
+echo  "Monitor CPU  : http://$PUBLIC_IP/monitor/cpu"
+echo  "Monitor Memory : http://$PUBLIC_IP/monitor/memory"
+ 
