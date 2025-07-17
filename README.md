@@ -1,4 +1,4 @@
-## myNest  V1.1.5
+## myNest  V1.1.6
 - New Dev & Test DB setup
 
 ## Description
@@ -152,21 +152,41 @@ vi srcBasicDeploy.sh  :  you can modify parameter(ex:SRCHOME) and git-repository
 chmod 755 srcBasicDeploy.sh 
 ./srcBasicDeploy.sh 
 ```
-
+ 
 ## Quick setup for github action 
 - Create a github action file (Normal or Docker) 
 - Normal - [.github/workflows/master_deploy_normal.yml](resource/sample_action/master_deploy_normal.yml)   
 - Docker - [.github/workflows/master_deploy_docker.yml](resource/sample_action/master_deploy_docker.yml)   
 - Before apply it, make github secrets and variables.        
  
+
+## All in One quick setup for PostgreDB + Nest.JS App in a Host : just follow below step 1~2.  
+```bash
+# Step1. Copu update batch 
+cp -f ~/ssh_remote_docker/resource/shell/initAppDBScript.sh ~/.  
+rm -rf ~/ssh_remote_docker  (will be cloning by the script)
+
+# Step2. Execute batch file 
+chmod 755 initAppDBScript.sh 
+./initAppDBScript.sh 
+
+# Step3. Check Result ( refer Browser Result Test Port 80)
+http://Public_IP/fruits   
+
+# Description
+# ~/dbwork :  Docker-compose Root For PostgreDB (v15)  
+# ~/appbase : Docker-compose Root For Next.js Application 
+# view log : (go to the docker compose root directory)
+sudo docker compose logs -f 
+```
 ## Browser Result Test   
 ```bash
 # Port 
 - Basic Arch Test : 3000 Port ( Node Only)
-- Docker Based Arch : 80 Port ( NginX + Node ) 
+- Docker Based Arch : 80 Port ( NginX + Node / All in One ) 
 
 # Basic App Service 
-http://ServerIP or domain:3000/    --> Hello My Nest!    
+http://ServerIP or domain:3000/    --> ex) Hello! App version: 1.1.5    
 
 # Show IP 
 http://ServerIP or domain:3000/ip   --> ex) 201.53.23.101 
@@ -179,6 +199,9 @@ http://ServerIP or domain:3000/monitor/cpu  --> ex) {"cpu-usage":0.1275833333333
 
 # Monitor Memory-Usage 
 http://ServerIP or domain:3000/monitor/memory  --> ex) {"memory-usage":0.9039504415152291}
+
+# CRUD Table data fetch 
+http://ServerIP or domain:3000/fruits --> ex) [{"id":1,"name":"Apple"},{"id":2,"name":"Banana"},{"id":3,"name":"Orange"},{"id":4,"name":"Grape"},{"id":5,"name":"Mango"},{"id":6,"name":"Pineapple"},{"id":7,"name":"Strawberry"},{"id":8,"name":"Watermelon"},{"id":9,"name":"Peach"},{"id":10,"name":"Cherry"}]
 
 ```
 
