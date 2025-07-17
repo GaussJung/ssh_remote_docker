@@ -1,4 +1,4 @@
-## myNest  V1.1.6
+## myNest  V1.1.7
 - New Dev & Test DB setup
 
 ## Description

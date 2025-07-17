@@ -7,9 +7,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { FruitModule } from './fruit/fruit.module';
-// import { CompanyModule } from './company/company.module'; // enable if needed
+import { CompanyModule } from './company/company.module';  
 import { MonitorModule } from './monitor/monitor.module';
-import { RootModule } from './root/root.module'; // 👈 root 모듈 import
+import { RootModule } from './root/root.module'; //  root 모듈 import
 
 import { getTypeOrmConfig } from './config/typeorm.config'; // TypeORM 설정
  
@@ -61,27 +61,16 @@ import { getTypeOrmConfig } from './config/typeorm.config'; // TypeORM 설정
       useFactory: getTypeOrmConfig,
     }),
 
-    /**
-     * Domain modules
-     */
+    // Domain modules
     FruitModule,
-    // CompanyModule,
+    CompanyModule,
     MonitorModule,
-
-    /**
-     * Root module (utility services)
-     */
+    // Root module (utility services)
     RootModule, // for ROOT 
   ],
-
-  /**
-   * Root controller
-   */
+  // Root controller
   controllers: [AppController],
-
-  /**
-   * Root-level services
-   */
+  // Root-level services
   providers: [AppService],
 })
 export class AppModule {}
