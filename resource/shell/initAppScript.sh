@@ -8,7 +8,16 @@
 #
 ### Package and library  
 # - Docker & Docker Compose
- 
+
+### Pre-requisites
+# vi .env_app 
+# setup environment variables for the application
+# -DB_HOST=140.---.---.11
+# DB_PORT=5432
+# DB_USERNAME=username
+# DB_PASSWORD=password
+# DB_DATABASE=dbname
+
 ### Run shell commands :   
 # $ chmod 755 initAppScript.sh
 # $ ./initAppScript.sh
@@ -75,11 +84,13 @@ APPHOME=/home/ubuntu/appbase
 echo "============ Copying Appbase Directory =============="
 cd $HOME
 cp -r $SRCHOME/resource/appbase $APPHOME
+cp -r ~/.env_app $APPHOME/.env_app
 sleep 1
 
 echo "============ Create Directory for application =============="
 cd $APPHOME
 cp -r $SRCHOME  $APPHOME/app
+cp -r $APPHOME/app/.env  $APPHOME/.env
 mkdir  $APPHOME/node_readonly_modules
 sleep 1
 
