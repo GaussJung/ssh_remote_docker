@@ -25,7 +25,7 @@ async function bootstrap() {
   const allowedOrigins = [
     'https://front.fandom.live',
     'https://www.fandom.live',
-    'https://wwwfront.fandom.live',
+    'https://devfront.fandom.live',
     'https://wwwdev.fandom.live',
     'http://localhost:3000', // for localhost:3000
   ];
